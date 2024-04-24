@@ -9,8 +9,8 @@ const getTower = asyncHandler(async (req, res) => {
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
   });
-  let tower = await Tower.find().sort({createdAt:-1});
-  response=res;
+  let tower = await Tower.find().sort({ createdAt: -1 });
+  response = res;
   res.write(`data: ${JSON.stringify(tower)}\n\n`);
 });
 
@@ -20,7 +20,9 @@ const postTower = asyncHandler(async (req, res) => {
     req.body.anomalies = true;
   }
   let tower = await Tower.create(req.body);
-  response.write(`data: ${JSON.stringify([tower])}\n\n`);
+  if (response) {
+    response.write(`data: ${JSON.stringify([tower])}\n\n`);
+  }
 
   return res.status(200).json(new ApiResponse(200, { tower }, "tower data"));
 });
